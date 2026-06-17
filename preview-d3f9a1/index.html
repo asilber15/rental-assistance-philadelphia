@@ -478,6 +478,29 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
 </style>
 </head>
 <body>
+<div id="rap-gate" style="position:fixed;inset:0;z-index:999999;background:#14233A;display:flex;align-items:center;justify-content:center;font-family:'Public Sans',-apple-system,sans-serif;">
+  <div style="background:#FBF7EE;border-radius:16px;padding:34px 30px;max-width:370px;width:90%;box-shadow:0 24px 70px rgba(0,0,0,.45);text-align:center;">
+    <div style="font-family:Georgia,serif;font-size:1.35rem;color:#14233A;font-weight:600;">Private preview</div>
+    <p style="color:#4C5667;font-size:.9rem;margin:8px 0 18px;">Rental Assistance Philadelphia — draft site for review. Please enter the access password.</p>
+    <input id="rap-pw" type="password" placeholder="Password" autocomplete="off" style="width:100%;padding:11px 12px;border:1px solid #cbb;border-radius:9px;font-size:1rem;box-sizing:border-box;">
+    <button id="rap-btn" style="margin-top:12px;width:100%;padding:12px;border:none;border-radius:9px;background:#C8A24A;color:#241c05;font-weight:700;font-size:1rem;cursor:pointer;">Enter</button>
+    <p id="rap-err" style="color:#b23030;font-size:.82rem;min-height:1em;margin:9px 0 0;"></p>
+  </div>
+</div>
+<script>
+(function(){
+  var PW="RentalAssist2026";
+  var g=document.getElementById('rap-gate');
+  function unlock(){try{sessionStorage.setItem('rap_ok','1');}catch(e){} if(g&&g.parentNode)g.parentNode.removeChild(g); document.documentElement.style.overflow='';}
+  try{if(sessionStorage.getItem('rap_ok')==='1'){unlock();return;}}catch(e){}
+  document.documentElement.style.overflow='hidden';
+  function go(){if(document.getElementById('rap-pw').value===PW){unlock();}else{document.getElementById('rap-err').textContent='Incorrect password.';}}
+  document.getElementById('rap-btn').addEventListener('click',go);
+  document.getElementById('rap-pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+  document.getElementById('rap-pw').focus();
+})();
+</script>
+
 <header class="masthead" id="masthead">
   <div class="wrap nav">
     <a class="brand" href="#home" aria-label="Rental Assistance Philadelphia — home">
