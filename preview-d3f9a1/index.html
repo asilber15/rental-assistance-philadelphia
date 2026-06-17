@@ -9,14 +9,14 @@
   Shared: Client Portal (#portal), FAQ (#faq), Apply (#apply), Contact (#contact).
 
   PLACEHOLDER TOKENS TO FILL BEFORE LAUNCH:
-    - phone / email       placeholder (215) 402-6882 / hello@rentassistphilly.com in CTA + footer + JSON-LD
+    - phone / email       placeholder (215) 402-6882 / info@rentalassistanceservices.com in CTA + footer + JSON-LD
     - form action="#"     wire ALL FOUR forms to real endpoints (see per-form WIRING comments):
                             #intake-form  (back rent / TFA — multipart, file uploads)
                             #license-form (rental license)
                             #tax-form     (city tax compliance)
                             #contact-form (lead form)
     - Owner name          portal demo "Marcus Reed" — sample only
-    - domains             rentassistphilly.com / rentclearphilly.com referenced in footer + JSON-LD
+    - domains             rentalassistanceservices.com / rentclearphilly.com referenced in footer + JSON-LD
 
   In-page anchors: #home #rentassist #rentclear #why-rental-license #why-commercial-license
                    #rental-license-intake #tax-compliance #portal #faq #apply #contact
@@ -33,21 +33,21 @@
 <title>Rental Assistance Philadelphia — Get Your Tenant's Back Rent Paid</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsPSJSZW50Q2xlYXIgbWFyayI+CiAgPHRpdGxlPlJlbnRDbGVhciBtYXJrIOKAlCBjaGVjayBpbiBob3VzZTwvdGl0bGU+CiAgPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIHJ4PSIyMCIgZmlsbD0iIzFFM0E1RiIvPgogIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE0LDE2KSI+CiAgICA8cGF0aCBkPSJNMzYgNCBMNzAgMzAgVjcyIEgyIFYzMCBaIiBmaWxsPSJub25lIiBzdHJva2U9IiNGOUY2RjAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTM2IDQgTDcwIDMwIiBmaWxsPSJub25lIiBzdHJva2U9IiNENEE5NzAiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8cGF0aCBkPSJNMzYgNCBMMiAzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRDRBOTcwIiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPHBhdGggZD0iTTE4IDQ4IEwzMSA2MSBMNTYgMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJCQUU0RSIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KICA8L2c+Cjwvc3ZnPgo=">
 <meta name="description" content="Rental Assistance Philadelphia helps Philadelphia landlords recover a delinquent tenant's back rent — paid by the City, up to $3,500 plus two months of future rent, by direct deposit. We also handle rental licensing and city-tax compliance. We do the paperwork; it costs you nothing to apply.">
-<link rel="canonical" href="https://www.rentassistphilly.com/">
+<link rel="canonical" href="https://www.rentalassistanceservices.com/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rental Assistance Philadelphia">
 <meta property="og:title" content="Rental Assistance Philadelphia — Get Your Tenant's Back Rent Paid">
 <meta property="og:description" content="The City will pay your tenant's back rent — up to $3,500 plus two months of future rent, by direct deposit straight to you. We handle the whole filing, and the licensing and tax side too.">
-<meta property="og:url" content="https://www.rentassistphilly.com/">
-<meta property="og:image" content="https://www.rentassistphilly.com/og-image.png">
+<meta property="og:url" content="https://www.rentalassistanceservices.com/">
+<meta property="og:image" content="https://www.rentalassistanceservices.com/og-image.png">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Rental Assistance Philadelphia — Get Your Tenant's Back Rent Paid">
 <meta name="twitter:description" content="The City pays your tenant's back rent by direct deposit — up to $3,500 plus two months of future rent. We handle the filing, plus licensing and tax compliance. Costs you nothing to apply.">
-<meta name="twitter:image" content="https://www.rentassistphilly.com/og-image.png">
+<meta name="twitter:image" content="https://www.rentalassistanceservices.com/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,15 +58,15 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://www.rentassistphilly.com/#org",
+  "@id": "https://www.rentalassistanceservices.com/#org",
   "name": "Rental Assistance Philadelphia",
   "legalName": "Rental Assistance Services LLC",
   "slogan": "Get your tenant's back rent paid.",
   "description": "Rental Assistance Philadelphia helps Philadelphia landlords recover a delinquent tenant's back rent, paid by the City, through the Eviction Diversion Program / Targeted Financial Assistance — and handles rental licensing and city-tax compliance.",
   "areaServed": {"@type": "City", "name": "Philadelphia", "containedInPlace": {"@type": "State", "name": "Pennsylvania"}},
-  "url": "https://www.rentassistphilly.com/",
+  "url": "https://www.rentalassistanceservices.com/",
   "telephone": "+1-215-402-6882",
-  "email": "hello@rentassistphilly.com",
+  "email": "info@rentalassistanceservices.com",
   "makesOffer": [
     {"@type": "Offer", "name": "Back rent paid — Eviction Diversion / TFA filing", "description": "We manage the Philadelphia Eviction Diversion Program filing and Targeted Financial Assistance application so landlords get past-due rent (up to a $3,500 cap) plus two months of future rent paid by direct deposit."},
     {"@type": "Offer", "name": "Rental License", "description": "We get Philadelphia landlords a valid Rental License from Licenses & Inspections (L&I) end to end — setting up the Business Tax Account (BIRT), the Commercial Activity License where required, and the Certificate of Rental Suitability."},
@@ -478,7 +478,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
 </style>
 </head>
 <body>
-<div id="rap-gate" style="position:fixed;inset:0;z-index:999999;background:#14233A;display:flex;align-items:center;justify-content:center;font-family:'Public Sans',-apple-system,sans-serif;"><div style="background:#FBF7EE;border-radius:16px;padding:34px 30px;max-width:370px;width:90%;box-shadow:0 24px 70px rgba(0,0,0,.45);text-align:center;"><div style="font-family:Georgia,serif;font-size:1.35rem;color:#14233A;font-weight:600;">Private preview</div><p style="color:#4C5667;font-size:.9rem;margin:8px 0 18px;">Rental Assistance Philadelphia &mdash; draft site for review. Please enter the access password.</p><input id="rap-pw" type="password" placeholder="Password" autocomplete="off" style="width:100%;padding:11px 12px;border:1px solid #cbb;border-radius:9px;font-size:1rem;box-sizing:border-box;"><button id="rap-btn" style="margin-top:12px;width:100%;padding:12px;border:none;border-radius:9px;background:#C8A24A;color:#241c05;font-weight:700;font-size:1rem;cursor:pointer;">Enter</button><p id="rap-err" style="color:#b23030;font-size:.82rem;min-height:1em;margin:9px 0 0;"></p></div></div>
+<div id="rap-gate" style="position:fixed;inset:0;z-index:999999;background:#14233A;display:flex;align-items:center;justify-content:center;font-family:'Public Sans',sans-serif;"><div style="background:#FBF7EE;border-radius:16px;padding:34px 30px;max-width:370px;width:90%;box-shadow:0 24px 70px rgba(0,0,0,.45);text-align:center;"><div style="font-family:Georgia,serif;font-size:1.35rem;color:#14233A;font-weight:600;">Private preview</div><p style="color:#4C5667;font-size:.9rem;margin:8px 0 18px;">Rental Assistance Philadelphia &mdash; draft for review. Enter the access password.</p><input id="rap-pw" type="password" placeholder="Password" autocomplete="off" style="width:100%;padding:11px 12px;border:1px solid #cbb;border-radius:9px;font-size:1rem;box-sizing:border-box;"><button id="rap-btn" style="margin-top:12px;width:100%;padding:12px;border:none;border-radius:9px;background:#C8A24A;color:#241c05;font-weight:700;font-size:1rem;cursor:pointer;">Enter</button><p id="rap-err" style="color:#b23030;font-size:.82rem;min-height:1em;margin:9px 0 0;"></p></div></div>
 <script>(function(){var PW="RentalAssist2026";var g=document.getElementById('rap-gate');function unlock(){try{sessionStorage.setItem('rap_ok','1');}catch(e){}if(g&&g.parentNode)g.parentNode.removeChild(g);document.documentElement.style.overflow='';}try{if(sessionStorage.getItem('rap_ok')==='1'){unlock();return;}}catch(e){}document.documentElement.style.overflow='hidden';function go(){if(document.getElementById('rap-pw').value===PW){unlock();}else{document.getElementById('rap-err').textContent='Incorrect password.';}}document.getElementById('rap-btn').addEventListener('click',go);document.getElementById('rap-pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});document.getElementById('rap-pw').focus();})();</script>
 <header class="masthead" id="masthead">
   <div class="wrap nav">
@@ -801,7 +801,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
             <div class="field"><label for="lic-owner-entity">Owning entity / LLC</label><input id="lic-owner-entity" name="owner_entity" type="text" placeholder="Reed Property Group LLC"><p class="help">Leave blank if you own in your personal name.</p></div>
           </div>
           <div class="row">
-            <div class="field"><label for="lic-owner-email">Email <span class="req">*</span></label><input id="lic-owner-email" name="owner_email" type="email" autocomplete="email" placeholder="you@rentassistphilly.com" required><p class="errmsg">Enter a valid email address.</p></div>
+            <div class="field"><label for="lic-owner-email">Email <span class="req">*</span></label><input id="lic-owner-email" name="owner_email" type="email" autocomplete="email" placeholder="you@email.com" required><p class="errmsg">Enter a valid email address.</p></div>
             <div class="field"><label for="lic-owner-phone">Phone <span class="req">*</span></label><input id="lic-owner-phone" name="owner_phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(215) 555-0123" required><p class="errmsg">Enter a valid phone number (at least 10 digits).</p></div>
           </div>
         </fieldset>
@@ -870,7 +870,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
             <p class="fs-sub">The owner or entity the tax account belongs to.</p>
             <div class="field"><label for="tax-owner-name">Owner / entity name <span class="req">*</span></label><input id="tax-owner-name" name="owner_entity_name" type="text" autocomplete="name" placeholder="Reed Property Group LLC (or your name)" required><p class="errmsg">Enter the owner or entity name.</p></div>
             <div class="row">
-              <div class="field"><label for="tax-owner-email">Email <span class="req">*</span></label><input id="tax-owner-email" name="owner_email" type="email" autocomplete="email" placeholder="you@rentassistphilly.com" required><p class="errmsg">Enter a valid email address.</p></div>
+              <div class="field"><label for="tax-owner-email">Email <span class="req">*</span></label><input id="tax-owner-email" name="owner_email" type="email" autocomplete="email" placeholder="you@email.com" required><p class="errmsg">Enter a valid email address.</p></div>
               <div class="field"><label for="tax-owner-phone">Phone <span class="req">*</span></label><input id="tax-owner-phone" name="owner_phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(215) 555-0123" required><p class="errmsg">Enter a valid phone number (at least 10 digits).</p></div>
             </div>
             <div class="field"><label for="tax-properties">Number of Philadelphia properties <span class="req">*</span></label><input id="tax-properties" name="property_count" type="number" min="1" step="1" inputmode="numeric" placeholder="3" required><p class="errmsg">Enter how many Philadelphia properties you own (1 or more).</p></div>
@@ -1024,7 +1024,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
             <div class="field"><label for="owner-entity">Owning entity / LLC</label><input id="owner-entity" name="owner_entity" type="text" placeholder="Reed Property Group LLC"><p class="help">Leave blank if you own in your personal name.</p></div>
           </div>
           <div class="row">
-            <div class="field"><label for="owner-email">Email <span class="req">*</span></label><input id="owner-email" name="owner_email" type="email" autocomplete="email" placeholder="you@rentassistphilly.com" required><p class="errmsg">Enter a valid email address.</p></div>
+            <div class="field"><label for="owner-email">Email <span class="req">*</span></label><input id="owner-email" name="owner_email" type="email" autocomplete="email" placeholder="you@email.com" required><p class="errmsg">Enter a valid email address.</p></div>
             <div class="field"><label for="owner-phone">Phone <span class="req">*</span></label><input id="owner-phone" name="owner_phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(215) 555-0123" required><p class="errmsg">Enter a valid phone number (at least 10 digits).</p></div>
           </div>
           <div class="field"><label for="owner-units">Number of rental units you own <span class="req">*</span></label><input id="owner-units" name="owner_units" type="number" min="1" step="1" inputmode="numeric" placeholder="3" required><p class="errmsg">Enter the number of units (1 or more).</p></div>
@@ -1043,7 +1043,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
           <p class="fs-sub">The household on the lease. Contact details help, but aren't required.</p>
           <div class="field"><label for="tenant-name">Tenant name(s) <span class="req">*</span></label><input id="tenant-name" name="tenant_name" type="text" placeholder="Dwayne Carter" required><p class="errmsg">Enter the tenant's name.</p></div>
           <div class="row">
-            <div class="field"><label for="tenant-email">Tenant email <span class="muted">(if known)</span></label><input id="tenant-email" name="tenant_email" type="email" placeholder="tenant@rentassistphilly.com"><p class="errmsg">Enter a valid email or leave blank.</p></div>
+            <div class="field"><label for="tenant-email">Tenant email <span class="muted">(if known)</span></label><input id="tenant-email" name="tenant_email" type="email" placeholder="tenant@email.com"><p class="errmsg">Enter a valid email or leave blank.</p></div>
             <div class="field"><label for="tenant-phone">Tenant phone <span class="muted">(if known)</span></label><input id="tenant-phone" name="tenant_phone" type="tel" inputmode="tel" placeholder="(215) 555-0188"><p class="errmsg">Enter a valid phone or leave blank.</p></div>
           </div>
           <div class="field"><label for="tenant-movein">Move-in date</label><input id="tenant-movein" name="tenant_movein" type="date"><p class="help">The start of the current tenancy, if you have it.</p></div>
@@ -1105,7 +1105,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
             <li style="color:#B7C3D6;">We run the portal application so it never stalls.</li>
             <li style="color:#B7C3D6;">The City sends the funds by direct deposit straight to you.</li>
           </ul>
-          <div class="callout on-ink" style="margin-top:22px;"><strong>Prefer to talk?</strong> Call <a href="tel:+12154026882" style="color:var(--brass);">(215) 402-6882</a> or email <a href="mailto:hello@rentassistphilly.com" style="color:var(--brass);">hello@rentassistphilly.com</a>.</div>
+          <div class="callout on-ink" style="margin-top:22px;"><strong>Prefer to talk?</strong> Call <a href="tel:+12154026882" style="color:var(--brass);">(215) 402-6882</a> or email <a href="mailto:info@rentalassistanceservices.com" style="color:var(--brass);">info@rentalassistanceservices.com</a>.</div>
           <p class="note on-ink" style="margin-top:16px;">Owed more than $3,500? You still qualify &mdash; see <a href="#rentassist" style="color:var(--brass);">what you can collect</a>.</p>
         </div>
         <div>
@@ -1172,7 +1172,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
         <li><a href="#portal">Client portal</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a href="mailto:hello@rentassistphilly.com">hello@rentassistphilly.com</a></li>
+        <li><a href="mailto:info@rentalassistanceservices.com">info@rentalassistanceservices.com</a></li>
         <li><a href="tel:+12154026882">(215) 402-6882</a></li>
         <li>Serving Philadelphia, PA</li>
       </ul>
