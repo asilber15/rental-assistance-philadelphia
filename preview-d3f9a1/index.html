@@ -488,17 +488,14 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
   </div>
 </div>
 <script>
-(function(){
-  var PW="RentalAssist2026";
-  var g=document.getElementById('rap-gate');
-  function unlock(){try{sessionStorage.setItem('rap_ok','1');}catch(e){} if(g&&g.parentNode)g.parentNode.removeChild(g); document.documentElement.style.overflow='';}
-  try{if(sessionStorage.getItem('rap_ok')==='1'){unlock();return;}}catch(e){}
-  document.documentElement.style.overflow='hidden';
-  function go(){if(document.getElementById('rap-pw').value===PW){unlock();}else{document.getElementById('rap-err').textContent='Incorrect password.';}}
-  document.getElementById('rap-btn').addEventListener('click',go);
-  document.getElementById('rap-pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
-  document.getElementById('rap-pw').focus();
-})();
+(function(){var PW="RentalAssist2026";var g=document.getElementById('rap-gate');
+function unlock(){try{sessionStorage.setItem('rap_ok','1');}catch(e){}if(g&&g.parentNode)g.parentNode.removeChild(g);document.documentElement.style.overflow='';}
+try{if(sessionStorage.getItem('rap_ok')==='1'){unlock();return;}}catch(e){}
+document.documentElement.style.overflow='hidden';
+function go(){if(document.getElementById('rap-pw').value===PW){unlock();}else{document.getElementById('rap-err').textContent='Incorrect password.';}}
+document.getElementById('rap-btn').addEventListener('click',go);
+document.getElementById('rap-pw').addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+document.getElementById('rap-pw').focus();})();
 </script>
 
 <header class="masthead" id="masthead">
@@ -1094,13 +1091,15 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
           <div id="evp-block" class="hidden-block"><div class="field"><label for="evp-number">Application / EVP number</label><input id="evp-number" name="evp_number" type="text" placeholder="EDP-2026-04417"><p class="help">If diversion was already approved, you have a 5-day window to apply for TFA &mdash; tell us right away so we don't miss it.</p></div></div>
         </fieldset>
         <fieldset class="fs">
-          <div class="fs-head"><span class="fs-step">7</span><h3>Authorize us &amp; finish</h3></div>
-          <p class="fs-sub">One checkbox lets us act for you.</p>
+          <div class="fs-head"><span class="fs-step">7</span><h3>Fee, authorization &amp; finish</h3></div>
+          <p class="fs-sub">How we're paid, and the authorizations that let us act for you.</p>
+          <div class="callout brass" style="margin-bottom:18px;"><strong>Our fee:</strong> success-based &mdash; <strong>33% of the funds the City pays</strong> on your case (back rent plus the two months of future rent). If the City doesn't pay, you owe us nothing &mdash; no upfront cost and no application fee. Full terms are in the <a href="terms.html" target="_blank" rel="noopener" style="color:var(--brass-2);">Service Agreement</a>.</div>
           <div class="field"><div class="consent"><input id="consent" name="consent" type="checkbox" required><label for="consent">I authorize Rental Assistance Services LLC to open and manage an Eviction Diversion Program case and file a Targeted Financial Assistance application with the City of Philadelphia on my behalf, using the information and documents I've provided. <span class="req">*</span></label></div><p class="errmsg">You must authorize us to file on your behalf.</p></div>
+          <div class="field"><div class="consent"><input id="agree-terms" name="agree_terms" type="checkbox" required><label for="agree-terms">I have read and agree to the <a href="terms.html" target="_blank" rel="noopener">Rental Assistance Services Service Agreement</a>, including the 33% success-based fee. <span class="req">*</span></label></div><p class="errmsg">Please review and agree to the Service Agreement to continue.</p></div>
           <div class="field"><label for="referral">How did you hear about us?</label><select id="referral" name="referral"><option value="">Select one (optional)</option><option>Google / web search</option><option>Referred by another landlord</option><option>Real estate agent / property manager</option><option>Social media</option><option>Mailer / flyer</option><option>Other</option></select></div>
           <div class="field" style="position:absolute;left:-9999px;" aria-hidden="true"><label for="company-hp">Company (leave blank)</label><input id="company-hp" name="company" type="text" tabindex="-1" autocomplete="off"></div>
           <button class="btn btn-brass block" type="submit">Submit my application <span class="arw" aria-hidden="true">&rarr;</span></button>
-          <p class="form-note">No fee. No obligation. We only proceed if the City will pay. By submitting, you agree to be contacted about your case.</p>
+          <p class="form-note">No upfront cost and no application fee &mdash; our 33% fee applies only if the City pays. By submitting, you authorize us to file and agree to the Service Agreement.</p>
           <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
         </fieldset>
       </form>
