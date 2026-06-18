@@ -1288,7 +1288,48 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
     form.querySelectorAll('input[name="'+radioName+'"]').forEach(function(r){ r.addEventListener('change', sync); });
     sync();
   }
-  function initIntakeForm(formId, statusId){
+  // Live CRM intake endpoint (Rio Platform — Supabase contacts CRM, segmented
+  // service_line='landlord-assistance'). Mounted in Rio/Engine/api/app.py at
+  // /rental-assist; nginx proxies it to the rio-api service.
+  var INTAKE_ENDPOINT = 'https://rio.tworiverdevelopment.tech/rental-assist/intake';
+
+  // Forward utm_* params (mirror of apply_chat's _clean_utm) if present in the URL.
+  function utmParams(){
+    var out = {}, q = new URLSearchParams(window.location.search);
+    ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){
+      var v = q.get(k); if(v){ out[k] = String(v).slice(0,200); }
+    });
+    return out;
+  }
+  function showConfirmation(form, status){
+    // Confirmation (item 11): reference number, next steps, and any still-needed documents (item 12).
+    var ref = 'RAS-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000 + Math.random()*9000);
+    var missing = [];
+    form.querySelectorAll('input[type="file"]').forEach(function(f){
+      if(!f.files || !f.files.length){ var lab = form.querySelector('label[for="'+f.id+'"]'); missing.push(lab ? lab.textContent.trim() : f.name); }
+    });
+    var missHtml = missing.length
+      ? '<p style="margin-top:12px;"><strong>Still needed:</strong> ' + missing.join(', ') + '. We&rsquo;ll email you a secure link to add these &mdash; your place is saved, so you won&rsquo;t lose your application.</p>'
+      : '';
+    var nextFile = (form.id === 'intake-form')
+      ? 'If it&rsquo;s a fit, we open diversion, elect the Targeted Financial Assistance (TFA) track, and run the whole filing.'
+      : 'If it&rsquo;s a fit, we map your exact steps and handle the filing.';
+    var panel = document.createElement('div');
+    panel.className = 'callout';
+    panel.setAttribute('role','status');
+    panel.style.marginTop = '8px';
+    panel.innerHTML = '<h3 style="margin:0 0 8px;">Application received &mdash; reference ' + ref + '</h3>'
+      + '<p>Thanks! Here&rsquo;s what happens next:</p>'
+      + '<ul class="checklist"><li>We review your details &mdash; usually within one business day.</li>'
+      + '<li>We tell you straight whether the City will likely pay.</li>'
+      + '<li>' + nextFile + '</li></ul>'
+      + '<p>We&rsquo;ll email a confirmation to the address you provided and follow up shortly. Questions? <a href="mailto:info@rentalassistanceservices.com">info@rentalassistanceservices.com</a>.</p>'
+      + missHtml;
+    form.parentNode.insertBefore(panel, form);
+    form.style.display = 'none';
+    panel.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function initIntakeForm(formId, statusId, formType){
     var form = document.getElementById(formId);
     if(!form) return;
     var status = document.getElementById(statusId);
@@ -1297,7 +1338,7 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
       el.addEventListener(evt, function(){ if(el.required || el.value) validateField(el); });
     });
     form.addEventListener('submit', function(e){
-      e.preventDefault(); // action="#" is a placeholder — wire to a real endpoint.
+      e.preventDefault(); // wired to the live CRM endpoint below.
       var firstBad = null, allOk = true, seenRadioGroups = {};
       form.querySelectorAll('input,select,textarea').forEach(function(el){
         if(el.name === 'company') return; // honeypot
@@ -1315,42 +1356,61 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
         if(firstBad){ firstBad.focus(); firstBad.scrollIntoView({behavior:'smooth', block:'center'}); }
         return;
       }
-      // Confirmation (item 11): reference number, next steps, and any still-needed documents (item 12).
-      var ref = 'RAS-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(1000 + Math.random()*9000);
-      var missing = [];
-      form.querySelectorAll('input[type="file"]').forEach(function(f){
-        if(!f.files || !f.files.length){ var lab = form.querySelector('label[for="'+f.id+'"]'); missing.push(lab ? lab.textContent.trim() : f.name); }
-      });
-      var missHtml = missing.length
-        ? '<p style="margin-top:12px;"><strong>Still needed:</strong> ' + missing.join(', ') + '. We&rsquo;ll email you a secure link to add these &mdash; your place is saved, so you won&rsquo;t lose your application.</p>'
-        : '';
-      var nextFile = (form.id === 'intake-form')
-        ? 'If it&rsquo;s a fit, we open diversion, elect the Targeted Financial Assistance (TFA) track, and run the whole filing.'
-        : 'If it&rsquo;s a fit, we map your exact steps and handle the filing.';
-      var panel = document.createElement('div');
-      panel.className = 'callout';
-      panel.setAttribute('role','status');
-      panel.style.marginTop = '8px';
-      panel.innerHTML = '<h3 style="margin:0 0 8px;">Application received &mdash; reference ' + ref + '</h3>'
-        + '<p>Thanks! Here&rsquo;s what happens next:</p>'
-        + '<ul class="checklist"><li>We review your details &mdash; usually within one business day.</li>'
-        + '<li>We tell you straight whether the City will likely pay.</li>'
-        + '<li>' + nextFile + '</li></ul>'
-        + '<p>We&rsquo;ll email a confirmation to the address you provided and follow up shortly. Questions? <a href="mailto:leadtestingservicesphila@gmail.com">leadtestingservicesphila@gmail.com</a>.</p>'
-        + missHtml;
-      form.parentNode.insertBefore(panel, form);
-      form.style.display = 'none';
-      panel.scrollIntoView({behavior:'smooth', block:'center'});
+
+      // Build the payload. The back-rent intake has file uploads -> multipart;
+      // license/tax are field-only -> JSON. Both carry form_type + the honeypot
+      // (company) + any utm_* params so the server can segment + attribute.
+      var btn = form.querySelector('button[type="submit"]');
+      var hasFiles = !!form.querySelector('input[type="file"]');
+      var body, headers = null;
+      var utm = utmParams();
+      if(hasFiles){
+        var fd = new FormData(form);          // includes file inputs + honeypot company field
+        fd.set('form_type', formType);
+        Object.keys(utm).forEach(function(k){ fd.set(k, utm[k]); });
+        body = fd;                             // browser sets multipart boundary header
+      } else {
+        var obj = {form_type: formType};
+        form.querySelectorAll('input,select,textarea').forEach(function(el){
+          if(!el.name || el.type === 'file') return;
+          if(el.type === 'checkbox' || el.type === 'radio'){ if(!el.checked) return; }
+          obj[el.name] = el.value;
+        });
+        Object.keys(utm).forEach(function(k){ obj[k] = utm[k]; });
+        body = JSON.stringify(obj);
+        headers = {'Content-Type': 'application/json'};
+      }
+
+      if(btn){ btn.disabled = true; }
+      if(status){ status.textContent = 'Submitting…'; status.classList.remove('bad'); status.classList.add('show'); }
+
+      fetch(INTAKE_ENDPOINT, {method:'POST', body: body, headers: headers})
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(d){ return {ok: r.ok, data: d}; }); })
+        .then(function(res){
+          if(!res.ok || !res.data || res.data.ok === false){
+            throw new Error((res.data && res.data.reply) || 'submit_failed');
+          }
+          showConfirmation(form, status);   // only on a real 200 from the endpoint
+        })
+        .catch(function(err){
+          if(btn){ btn.disabled = false; }
+          if(status){
+            status.textContent = (err && err.message && err.message !== 'submit_failed')
+              ? err.message
+              : 'Something went wrong submitting your application. Please try again, or call (215) 402-6882.';
+            status.classList.add('bad','show');
+          }
+        });
     });
   }
 
   // Back rent / TFA intake
-  initIntakeForm('intake-form', 'form-status');
+  initIntakeForm('intake-form', 'form-status', 'intake');
   (function(){ var f = document.getElementById('intake-form');
     if(f) wireReveal(f, 'diversion_filed', document.getElementById('evp-block'), 'yes'); })();
 
   // Rental License intake
-  initIntakeForm('license-form', 'license-status');
+  initIntakeForm('license-form', 'license-status', 'license');
   (function(){
     var f = document.getElementById('license-form'); if(!f) return;
     wireReveal(f, 'has_birt',           document.getElementById('lic-birt-block'), 'yes');
@@ -1370,19 +1430,71 @@ table.cases tr:hover td{background:rgba(200,162,74,.05);}
   })();
 
   // City Tax Compliance intake
-  initIntakeForm('tax-form', 'tax-status');
+  initIntakeForm('tax-form', 'tax-status', 'tax');
   (function(){
     var f = document.getElementById('tax-form'); if(!f) return;
     wireReveal(f, 'has_birt',    document.getElementById('tax-birt-block'),    'yes');
     wireReveal(f, 'has_balance', document.getElementById('tax-balance-block'), 'yes');
   })();
 
-  /* ---- 7) Contact lead-form demo handler ---- */
+  /* ---- 7) Contact lead-form handler — posts to the live CRM endpoint ---- */
   var contactForm = document.getElementById('contact-form');
   if(contactForm){
     contactForm.addEventListener('submit', function(e){
-      e.preventDefault(); // action="#" is a placeholder — wire to a real endpoint.
-      alert('Thanks. (Demo — connect this form to a backend to actually submit.)');
+      e.preventDefault(); // wired to the live CRM endpoint below.
+      var status = document.getElementById('contact-status');
+      if(!status){
+        status = document.createElement('div');
+        status.id = 'contact-status'; status.className = 'form-status';
+        status.setAttribute('role','status'); status.setAttribute('aria-live','polite');
+        var noteEl = contactForm.querySelector('.form-note');
+        contactForm.insertBefore(status, noteEl ? noteEl.nextSibling : null);
+      }
+      // honeypot — silently accept bots without submitting
+      var hp = contactForm.querySelector('input[name="company"]');
+      if(hp && hp.value.trim()){ return; }
+      // minimal required: name + (phone or email)
+      var name  = (contactForm.querySelector('[name="name"]')  || {}).value || '';
+      var phone = (contactForm.querySelector('[name="phone"]') || {}).value || '';
+      var email = (contactForm.querySelector('[name="email"]') || {}).value || '';
+      if(!name.trim() || (!phoneOk(phone) && !emailOk(email))){
+        status.textContent = 'Please give your name and a valid phone or email.';
+        status.className = 'form-status bad show';
+        return;
+      }
+      var obj = {form_type: 'contact'};
+      contactForm.querySelectorAll('input,select,textarea').forEach(function(el){
+        if(!el.name) return;
+        if(el.type === 'checkbox' || el.type === 'radio'){ if(!el.checked) return; }
+        obj[el.name] = el.value;
+      });
+      var utm = utmParams();
+      Object.keys(utm).forEach(function(k){ obj[k] = utm[k]; });
+      var btn = contactForm.querySelector('button[type="submit"]');
+      if(btn){ btn.disabled = true; }
+      status.textContent = 'Submitting…'; status.className = 'form-status show';
+      fetch(INTAKE_ENDPOINT, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(obj)})
+        .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(d){ return {ok:r.ok, data:d}; }); })
+        .then(function(res){
+          if(!res.ok || !res.data || res.data.ok === false){
+            throw new Error((res.data && res.data.reply) || 'submit_failed');
+          }
+          var panel = document.createElement('div');
+          panel.className = 'callout on-ink'; panel.setAttribute('role','status'); panel.style.marginTop = '8px';
+          panel.innerHTML = '<h3 style="margin:0 0 8px;color:#fff;">Thanks &mdash; we&rsquo;ve got it.</h3>'
+            + '<p style="color:#B7C3D6;">We review your details, usually within one business day, and tell you straight whether the City will likely pay. '
+            + 'Prefer to talk? Call <a href="tel:+12154026882" style="color:var(--brass);">(215) 402-6882</a>.</p>';
+          contactForm.parentNode.insertBefore(panel, contactForm);
+          contactForm.style.display = 'none';
+          panel.scrollIntoView({behavior:'smooth', block:'center'});
+        })
+        .catch(function(err){
+          if(btn){ btn.disabled = false; }
+          status.textContent = (err && err.message && err.message !== 'submit_failed')
+            ? err.message
+            : 'Something went wrong. Please try again, or call (215) 402-6882.';
+          status.className = 'form-status bad show';
+        });
     });
   }
 })();
